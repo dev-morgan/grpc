@@ -12,14 +12,13 @@ buildscript {
     }
 }
 
-
 plugins {
     idea
     kotlin("jvm") version "1.6.10"
     id("com.google.protobuf") version "0.8.18"
 }
 
-group = "com.sample"
+group = "com.sample.grpc"
 version = "1.0-SNAPSHOT"
 
 repositories {

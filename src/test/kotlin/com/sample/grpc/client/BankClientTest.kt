@@ -7,7 +7,6 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import mu.KLogging
 
-
 class BankClientTest : FunSpec({
     lateinit var blockingStub: BankServiceGrpc.BankServiceBlockingStub
 
