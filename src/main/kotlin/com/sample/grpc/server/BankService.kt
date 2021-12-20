@@ -10,7 +10,7 @@ class BankService : BankServiceGrpc.BankServiceImplBase() {
     override fun getBalance(request: BalanceCheckRequest, responseObserver: StreamObserver<Balance>) {
         val accountNumber = request.accountNumber
         val balance = Balance.newBuilder()
-            .setAmount(accountNumber * 10)
+            .setAmount(AccountDatabase.getBalance(accountNumber)!!)
             .build()
         responseObserver.onNext(balance)
         responseObserver.onCompleted()

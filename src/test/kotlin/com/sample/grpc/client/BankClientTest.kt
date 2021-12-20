@@ -22,9 +22,10 @@ class BankClientTest : FunSpec({
         val balanceCheckRequest = BalanceCheckRequest.newBuilder()
             .setAccountNumber(5)
             .build()
+
         val balance = blockingStub.getBalance(balanceCheckRequest)
 
-        logger.debug("Received : $balance")
+        logger.info("Received -> $balance")
 
         balance.amount.shouldBe(50)
     }
