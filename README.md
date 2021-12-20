@@ -1,3 +1,3 @@
-# gRpc
+# gRPC
 
-play gRpc
+play gRPC
