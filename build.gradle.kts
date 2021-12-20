@@ -61,9 +61,14 @@ tasks {
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
+    implementation("io.github.microutils:kotlin-logging:2.1.21")
+    implementation("ch.qos.logback:logback-classic:1.2.9")
+
     implementation("io.grpc:grpc-netty-shaded:1.43.0")
     implementation("io.grpc:grpc-protobuf:1.42.1")
     implementation("io.grpc:grpc-stub:1.43.0")
 
-    testImplementation("io.kotlintest:kotlintest-runner-junit5:3.4.2")
+    compileOnly("org.apache.tomcat:annotations-api:6.0.53")
+
+    testImplementation("io.kotest:kotest-runner-junit5:5.0.2")
 }
