@@ -1,8 +1,7 @@
 package com.sample.grpc.server
 
-import com.sample.models.Balance
-import com.sample.models.BalanceCheckRequest
-import com.sample.models.BankServiceGrpc
+import com.sample.models.* // ktlint-disable no-wildcard-imports
+import io.grpc.Status
 import io.grpc.stub.StreamObserver
 
 class BankService : BankServiceGrpc.BankServiceImplBase() {
@@ -13,6 +12,29 @@ class BankService : BankServiceGrpc.BankServiceImplBase() {
             .setAmount(AccountDatabase.getBalance(accountNumber)!!)
             .build()
         responseObserver.onNext(balance)
+        responseObserver.onCompleted()
+    }
+
+    override fun withdraw(request: WithdrawRequest, responseObserver: StreamObserver<Money>) {
+        val accountNumber = request.accountNumber
+        val amount = request.amount // 10, 20, 30 ..
+        val balance = AccountDatabase.getBalance(accountNumber)!!
+
+        if (balance < amount) {
+            val status = Status.FAILED_PRECONDITION.withDescription("No enough money. You have only $balance")
+            responseObserver.onError(status.asRuntimeException())
+            return
+        }
+
+        var i = 0
+        while (1 < amount / 10) {
+            val money = Money.newBuilder().setValue(10).build()
+            responseObserver.onNext(money)
+            AccountDatabase.deductBalance(accountNumber, money.value)
+            Thread.sleep(1000)
+            i++
+        }
+
         responseObserver.onCompleted()
     }
 }
