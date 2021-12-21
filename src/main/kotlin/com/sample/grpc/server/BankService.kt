@@ -27,7 +27,7 @@ class BankService : BankServiceGrpc.BankServiceImplBase() {
         }
 
         var i = 0
-        while (1 < amount / 10) {
+        while (i < amount / 10) {
             val money = Money.newBuilder().setValue(10).build()
             responseObserver.onNext(money)
             AccountDatabase.deductBalance(accountNumber, money.value)
