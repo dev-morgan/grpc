@@ -39,4 +39,8 @@ class BankService : BankServiceGrpc.BankServiceImplBase() {
 
         responseObserver.onCompleted()
     }
+
+    override fun cashDeposit(responseObserver: StreamObserver<Balance>): StreamObserver<DepositRequest> {
+        return CashStreamingRequest(responseObserver)
+    }
 }

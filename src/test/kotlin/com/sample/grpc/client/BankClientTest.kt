@@ -2,6 +2,7 @@ package com.sample.grpc.client
 
 import com.sample.models.BalanceCheckRequest
 import com.sample.models.BankServiceGrpc
+import com.sample.models.DepositRequest
 import com.sample.models.WithdrawRequest
 import io.grpc.ManagedChannelBuilder
 import io.kotest.core.spec.style.FunSpec
@@ -39,9 +40,19 @@ class BankClientTest : FunSpec({
 
     test("withdrawAsync") {
         val latch = CountDownLatch(1)
-
         val request = WithdrawRequest.newBuilder().setAccountNumber(10).setAmount(50).build()
         bankServiceStub.withdraw(request, MoneySteamingResponse(latch))
+        latch.await()
+    }
+
+    test("cashStreamingRequest") {
+        val latch = CountDownLatch(1)
+        val streamObserver = bankServiceStub.cashDeposit(BalanceStreamObserver(latch))
+        for (i in 1..10) {
+            val depositRequest = DepositRequest.newBuilder().setAccountNumber(8).setAmount(10).build()
+            streamObserver.onNext(depositRequest)
+        }
+        streamObserver.onCompleted()
         latch.await()
     }
 }) {
