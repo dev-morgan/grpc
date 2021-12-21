@@ -25,5 +25,5 @@ message TransferResponse {
 }
 
 service TransferService {
-  rpc transfer(stream TransferRequest) returns (stream TransferResponse);
+  rpc transfer(stream TransferRequest) returns (stream TransferResponse); // check the stream TransferRequest, TransferResponse
 }
