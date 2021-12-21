@@ -12,6 +12,8 @@ class BankService : BankServiceGrpc.BankServiceImplBase() {
             .setAmount(AccountDatabase.getBalance(accountNumber)!!)
             .build()
         responseObserver.onNext(balance)
+        responseObserver.onNext(balance)
+        responseObserver.onNext(balance)
         responseObserver.onCompleted()
     }
 
