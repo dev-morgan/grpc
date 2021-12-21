@@ -13,7 +13,7 @@ class CashStreamingRequest(
         val accountNumber = request.accountNumber
         val amount = request.amount
 
-        this.accountBalance = AccountDatabase.addBalance(accountNumber, amount)!!
+        this.accountBalance = AccountDatabase.addBalance(accountNumber, amount)
     }
 
     override fun onError(t: Throwable?) {

@@ -1,5 +1,7 @@
 package com.sample.grpc.server
 
+import mu.KLogging
+
 /**
  * This is a DB
  *
@@ -8,18 +10,25 @@ package com.sample.grpc.server
  * ..
  * 10 => 100
  */
-object AccountDatabase {
-    private val balanceMap = (1..10).associateWith { it * 10 } as HashMap
+class AccountDatabase {
+    companion object : KLogging() {
 
-    fun getBalance(accountId: Int): Int? {
-        return balanceMap[accountId]
-    }
+        private val balanceMap = (1..10).associateWith { it * 10 } as HashMap
 
-    fun addBalance(accountId: Int, amount: Int): Int? {
-        return balanceMap.computeIfPresent(accountId) { _, v -> v + amount }
-    }
+        fun getBalance(accountId: Int): Int {
+            return balanceMap[accountId]!!
+        }
 
-    fun deductBalance(accountId: Int, amount: Int): Int? {
-        return balanceMap.computeIfPresent(accountId) { _, v -> v - amount }
+        fun addBalance(accountId: Int, amount: Int): Int {
+            return balanceMap.computeIfPresent(accountId) { _, v -> v + amount }!!
+        }
+
+        fun deductBalance(accountId: Int, amount: Int): Int {
+            return balanceMap.computeIfPresent(accountId) { _, v -> v - amount }!!
+        }
+
+        fun printAccountDetails() {
+            logger.info("details -> $balanceMap")
+        }
     }
 }

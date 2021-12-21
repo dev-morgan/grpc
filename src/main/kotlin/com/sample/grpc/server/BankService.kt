@@ -9,7 +9,7 @@ class BankService : BankServiceGrpc.BankServiceImplBase() {
     override fun getBalance(request: BalanceCheckRequest, responseObserver: StreamObserver<Balance>) {
         val accountNumber = request.accountNumber
         val balance = Balance.newBuilder()
-            .setAmount(AccountDatabase.getBalance(accountNumber)!!)
+            .setAmount(AccountDatabase.getBalance(accountNumber))
             .build()
         responseObserver.onNext(balance)
         responseObserver.onNext(balance)
@@ -20,7 +20,7 @@ class BankService : BankServiceGrpc.BankServiceImplBase() {
     override fun withdraw(request: WithdrawRequest, responseObserver: StreamObserver<Money>) {
         val accountNumber = request.accountNumber
         val amount = request.amount // 10, 20, 30 ..
-        val balance = AccountDatabase.getBalance(accountNumber)!!
+        val balance = AccountDatabase.getBalance(accountNumber)
 
         if (balance < amount) {
             val status = Status.FAILED_PRECONDITION.withDescription("No enough money. You have only $balance")
