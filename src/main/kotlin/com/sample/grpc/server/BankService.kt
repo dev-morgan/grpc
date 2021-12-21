@@ -28,13 +28,11 @@ class BankService : BankServiceGrpc.BankServiceImplBase() {
             return
         }
 
-        var i = 0
-        while (i < amount / 10) {
+        for (i in 0 until (amount / 10)) {
             val money = Money.newBuilder().setValue(10).build()
             responseObserver.onNext(money)
             AccountDatabase.deductBalance(accountNumber, money.value)
             Thread.sleep(1000)
-            i++
         }
 
         responseObserver.onCompleted()
