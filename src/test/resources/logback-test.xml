@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <withJansi>true</withJansi>
         <encoder>
             <charset>UTF-8</charset>
-            <pattern>%d{yyyy/MM/dd HH:mm:ss.SSS} [%thread] %highlight(%-5level) %cyan(%logger{15}.%M\(%line\)) - %msg %n</pattern>
+            <pattern>%highlight(%-5level) %cyan(%logger{31}.%M\(%line\)) - %msg%n</pattern>
         </encoder>
     </appender>
 
-    <logger name="io.grpc.netty.shaded.io.netty.util.internal" level="WARN"/>
-
-    <root level="INFO">
-        <appender-ref ref="CONSOLE"/>
+    <root level="info">
+        <appender-ref ref="console"/>
     </root>
 </configuration>
