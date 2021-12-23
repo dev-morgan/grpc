@@ -1,5 +1,6 @@
 package com.sample.grpc.server.rpctypes
 
+import com.sample.grpc.server.AccountDatabase
 import com.sample.models.Account
 import com.sample.models.TransferRequest
 import com.sample.models.TransferResponse
