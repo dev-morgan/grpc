@@ -1,5 +1,6 @@
 package com.sample.grpc.server.rpctypes
 
+import com.sample.grpc.server.AccountDatabase
 import com.sample.models.* // ktlint-disable no-wildcard-imports
 import io.grpc.Status
 import io.grpc.stub.StreamObserver
