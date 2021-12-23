@@ -38,7 +38,7 @@ class MetaDataClientTest : FunSpec({
 
             try {
                 val balance = blockingStub
-                    .withCallCredentials(UserSessionToken("user-secret-$i"))
+                    .withCallCredentials(UserSessionToken("user-secret-$random:standard"))
                     .getBalance(balanceCheckRequest)
                 logger.info("Received -> $balance")
             } catch (e: StatusRuntimeException) {

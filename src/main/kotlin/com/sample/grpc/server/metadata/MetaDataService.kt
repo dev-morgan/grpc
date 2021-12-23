@@ -14,8 +14,16 @@ class MetaDataService : BankServiceGrpc.BankServiceImplBase() {
 
     override fun getBalance(request: BalanceCheckRequest, responseObserver: StreamObserver<Balance>) {
         val accountNumber = request.accountNumber
+        val userRole = ServerConstants.CTX_USER_ROLE.get() // from context
+        val userRole1 = ServerConstants.CTX_USER_ROLE1.get() // from context
+        var amount = AccountDatabase.getBalance(accountNumber)
+
+        amount = if (userRole.isPrime()) amount else (amount - 15)
+
+        logger.info { "$userRole : $userRole1" }
+
         val balance = Balance.newBuilder()
-            .setAmount(AccountDatabase.getBalance(accountNumber))
+            .setAmount(amount)
             .build()
 
         // simulate time-consuming call
