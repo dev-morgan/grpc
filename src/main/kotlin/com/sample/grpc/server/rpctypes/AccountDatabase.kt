@@ -1,4 +1,4 @@
-package com.sample.grpc.server
+package com.sample.grpc.server.rpctypes
 
 import mu.KLogging
 
