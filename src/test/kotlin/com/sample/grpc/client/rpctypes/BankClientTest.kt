@@ -21,7 +21,7 @@ class BankClientTest : FunSpec({
         bankServiceStub = BankServiceGrpc.newStub(managedChannel)
     }
 
-    test("balance amount") {
+    test("getBalance") {
         val balanceCheckRequest = BalanceCheckRequest.newBuilder().setAccountNumber(5).build()
 
         val balance = blockingStub.getBalance(balanceCheckRequest)
