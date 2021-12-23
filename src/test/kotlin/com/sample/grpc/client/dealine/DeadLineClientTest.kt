@@ -17,7 +17,9 @@ class DeadLineClientTest : FunSpec({
     lateinit var bankServiceStub: BankServiceGrpc.BankServiceStub
 
     beforeTest {
-        val managedChannel = ManagedChannelBuilder.forAddress("localhost", 6565).usePlaintext().build()
+        val managedChannel = ManagedChannelBuilder.forAddress("localhost", 6565)
+            .intercept(DeadLineInterceptor())
+            .usePlaintext().build()
 
         blockingStub = BankServiceGrpc.newBlockingStub(managedChannel)
         bankServiceStub = BankServiceGrpc.newStub(managedChannel)
@@ -28,14 +30,8 @@ class DeadLineClientTest : FunSpec({
             .setAccountNumber(7)
             .build()
 
-        try {
-            val balance = blockingStub
-                .withDeadline(Deadline.after(2, TimeUnit.SECONDS))
-                .getBalance(balanceCheckRequest)
-            logger.info("Received -> $balance.amount")
-        } catch (e: StatusRuntimeException) {
-            // go with default values
-        }
+        val balance = blockingStub.getBalance(balanceCheckRequest)
+        logger.info("Received -> $balance.amount")
     }
 
     test("withdraw") {
@@ -43,9 +39,10 @@ class DeadLineClientTest : FunSpec({
             .setAccountNumber(6)
             .setAmount(50)
             .build()
+
         try {
             blockingStub
-                .withDeadline(Deadline.after(4, TimeUnit.SECONDS))
+                .withDeadline(Deadline.after(2, TimeUnit.SECONDS))
                 .withdraw(request)
                 .forEachRemaining { money ->
                     logger.info("Received -> ${money.value}")
