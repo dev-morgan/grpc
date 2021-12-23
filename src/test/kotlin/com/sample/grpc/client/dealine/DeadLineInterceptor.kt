@@ -9,11 +9,10 @@ class DeadLineInterceptor : ClientInterceptor {
         callOptions: CallOptions,
         channel: Channel
     ): ClientCall<ReqT, RespT> {
-
-        callOptions.deadline?.let {
-            callOptions == callOptions.withDeadline(Deadline.after(4, TimeUnit.SECONDS))
+        return if (callOptions.deadline == null) {
+            channel.newCall(method, callOptions.withDeadline(Deadline.after(4, TimeUnit.SECONDS)))
+        } else {
+            channel.newCall(method, callOptions)
         }
-
-        return channel.newCall(method, callOptions)
     }
 }

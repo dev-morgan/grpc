@@ -32,7 +32,7 @@ class MetaDataClientTest : FunSpec({
             .setAccountNumber(7)
             .build()
 
-        for (i in 0..20) {
+        for (i in 0..10) {
             val random = ThreadLocalRandom.current().nextInt(1, 4)
             logger.info { "random : $random" }
 
@@ -40,7 +40,7 @@ class MetaDataClientTest : FunSpec({
                 val balance = blockingStub
                     .withCallCredentials(UserSessionToken("user-secret-$random:standard"))
                     .getBalance(balanceCheckRequest)
-                logger.info("Received -> $balance")
+                logger.info("Received -> ${balance.amount}")
             } catch (e: StatusRuntimeException) {
                 logger.error { e.message }
             }

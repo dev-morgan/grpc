@@ -31,7 +31,7 @@ class DeadLineClientTest : FunSpec({
             .build()
 
         val balance = blockingStub.getBalance(balanceCheckRequest)
-        logger.info("Received -> $balance.amount")
+        logger.info("Received -> ${balance.amount}")
     }
 
     test("withdraw") {
