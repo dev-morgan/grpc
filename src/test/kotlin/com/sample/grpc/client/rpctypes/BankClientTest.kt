@@ -1,4 +1,4 @@
-package com.sample.grpc.client
+package com.sample.grpc.client.rpctypes
 
 import com.sample.models.BalanceCheckRequest
 import com.sample.models.BankServiceGrpc
