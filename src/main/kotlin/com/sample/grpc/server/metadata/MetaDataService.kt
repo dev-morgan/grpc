@@ -1,13 +1,13 @@
 package com.sample.grpc.server.metadata
 
-import com.google.common.util.concurrent.Uninterruptibles
 import com.sample.grpc.server.AccountDatabase
-import com.sample.models.* // ktlint-disable no-wildcard-imports
+import com.sample.models.*
 import io.grpc.Context
+import io.grpc.Metadata
 import io.grpc.Status
+import io.grpc.protobuf.ProtoUtils
 import io.grpc.stub.StreamObserver
 import mu.KLogging
-import java.util.concurrent.TimeUnit
 
 class MetaDataService : BankServiceGrpc.BankServiceImplBase() {
     companion object : KLogging()
@@ -36,17 +36,35 @@ class MetaDataService : BankServiceGrpc.BankServiceImplBase() {
         val amount = request.amount // 10, 20, 30 ..
         val balance = AccountDatabase.getBalance(accountNumber)
 
+        if (amount < 10 || (amount % 10) != 0) {
+            val metadata = Metadata()
+            val errorKey = ProtoUtils.keyForProto(WithdrawalError.getDefaultInstance())
+            val withdrawalError = WithdrawalError.newBuilder()
+                .setAmount(balance)
+                .setErrorMessage(ErrorMessage.ONLY_TEN_MULTIPLES)
+                .build()
+            metadata.put(errorKey, withdrawalError)
+
+            responseObserver.onError(Status.FAILED_PRECONDITION.asRuntimeException(metadata))
+            return
+        }
+
         if (balance < amount) {
-            val status = Status.FAILED_PRECONDITION.withDescription("No enough money. You have only $balance")
-            responseObserver.onError(status.asRuntimeException())
+            val metadata = Metadata()
+            val errorKey = ProtoUtils.keyForProto(WithdrawalError.getDefaultInstance())
+            val withdrawalError = WithdrawalError.newBuilder()
+                .setAmount(balance)
+                .setErrorMessage(ErrorMessage.INSUFFICIENT_BALANCE)
+                .build()
+            metadata.put(errorKey, withdrawalError)
+
+            responseObserver.onError(Status.FAILED_PRECONDITION.asRuntimeException(metadata))
             return
         }
 
         run {
             for (i in 0 until (amount / 10)) {
                 val money = Money.newBuilder().setValue(10).build()
-                // simulate time-consuming call
-                Uninterruptibles.sleepUninterruptibly(3, TimeUnit.SECONDS)
 
                 if (Context.current().isCancelled) {
                     return@run

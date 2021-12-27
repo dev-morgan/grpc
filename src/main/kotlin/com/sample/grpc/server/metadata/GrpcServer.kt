@@ -5,7 +5,7 @@ import mu.KotlinLogging
 
 fun main() {
     val server = ServerBuilder.forPort(6565)
-        .intercept(AuthInterceptor())
+//        .intercept(AuthInterceptor())
         .addService(MetaDataService())
         .build()
 

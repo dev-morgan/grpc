@@ -1,6 +1,8 @@
 package com.sample.grpc.client.rpctypes
 
+import com.sample.grpc.client.metadata.ClientConstants.Companion.WITHDRAWAL_ERROR_KEY
 import com.sample.models.Money
+import io.grpc.Status
 import io.grpc.stub.StreamObserver
 import mu.KLogging
 import java.util.concurrent.CountDownLatch
@@ -14,8 +16,13 @@ class MoneySteamingResponse(
         logger.info("Received async : ${money.value}")
     }
 
-    override fun onError(t: Throwable) {
-        logger.error { t.message }
+    override fun onError(throwable: Throwable) {
+        val metaData = Status.trailersFromThrowable(throwable)
+        val withdrawalError = metaData?.get(WITHDRAWAL_ERROR_KEY)
+        withdrawalError?.let {
+            logger.error { "${withdrawalError.amount} : ${withdrawalError.errorMessage}" }
+        }
+
         latch.countDown()
     }
 

@@ -40,7 +40,7 @@ class BankClientTest : FunSpec({
 
     test("withdrawAsync") {
         val latch = CountDownLatch(1)
-        val request = WithdrawRequest.newBuilder().setAccountNumber(10).setAmount(50).build()
+        val request = WithdrawRequest.newBuilder().setAccountNumber(10).setAmount(60).build()
         bankServiceStub.withdraw(request, MoneySteamingResponse(latch))
         latch.await()
     }
