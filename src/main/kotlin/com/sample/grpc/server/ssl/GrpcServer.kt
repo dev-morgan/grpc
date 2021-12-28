@@ -10,12 +10,12 @@ fun main() {
 
     val sslContext = GrpcSslContexts.configure(
         SslContextBuilder.forServer(
-            File("ssl-path/localhost.crt"),
-            File("ssl-path/localhost.pem")
+            File("ssl-path/localhost.crt"), File("ssl-path/localhost.pem")
         )
     ).build()
 
-    val server = NettyServerBuilder.forPort(6565)
+    val server = NettyServerBuilder
+        .forPort(6565)
         .sslContext(sslContext)
         .addService(BankService())
         .build()

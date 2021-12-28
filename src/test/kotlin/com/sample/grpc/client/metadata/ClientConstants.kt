@@ -7,7 +7,8 @@ import io.grpc.protobuf.ProtoUtils
 
 class ClientConstants {
     companion object {
-        var WITHDRAWAL_ERROR_KEY: Metadata.Key<WithdrawalError> = ProtoUtils.keyForProto(WithdrawalError.getDefaultInstance())
+        var WITHDRAWAL_ERROR_KEY: Metadata.Key<WithdrawalError> =
+            ProtoUtils.keyForProto(WithdrawalError.getDefaultInstance())
         var USER_TOKEN: Metadata.Key<String> = Metadata.Key.of("user-token", ASCII_STRING_MARSHALLER)
         private var METADATA = Metadata()
 
