@@ -24,21 +24,21 @@ class TransferStreamingRequest(
             status = TransferStatus.SUCCESS
         }
 
-        val fromAccountInfo = Account.newBuilder()
-            .setAccountNumber(fromAccount)
-            .setAmount(AccountDatabase.getBalance(fromAccount))
-            .build()
+        val fromAccountInfo = Account.newBuilder().apply {
+            this.accountNumber = fromAccount
+            this.amount = AccountDatabase.getBalance(fromAccount)
+        }.build()
 
-        val toAccountInfo = Account.newBuilder()
-            .setAccountNumber(toAccount)
-            .setAmount(AccountDatabase.getBalance(toAccount))
-            .build()
+        val toAccountInfo = Account.newBuilder().apply {
+            this.accountNumber = toAccount
+            this.amount = AccountDatabase.getBalance(toAccount)
+        }.build()
 
-        val response = TransferResponse.newBuilder()
-            .setStatus(status)
-            .addAccounts(fromAccountInfo)
-            .addAccounts(toAccountInfo)
-            .build()
+        val response = TransferResponse.newBuilder().apply {
+            this.status = status
+            this.addAccounts(fromAccountInfo)
+            this.addAccounts(toAccountInfo)
+        }.build()
 
         this.transferResponseStreamObserver.onNext(response)
     }

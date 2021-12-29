@@ -15,9 +15,9 @@ class BankService : BankServiceGrpc.BankServiceImplBase() {
         val accountNumber = request.accountNumber
         logger.info("Received the request for $accountNumber")
 
-        val balance = Balance.newBuilder()
-            .setAmount(AccountDatabase.getBalance(accountNumber))
-            .build()
+        val balance = Balance.newBuilder().apply {
+            amount = AccountDatabase.getBalance(accountNumber)
+        }.build()
         responseObserver.onNext(balance)
         responseObserver.onCompleted()
     }

@@ -9,9 +9,10 @@ class BankService : BankServiceGrpc.BankServiceImplBase() {
 
     override fun getBalance(request: BalanceCheckRequest, responseObserver: StreamObserver<Balance>) {
         val accountNumber = request.accountNumber
-        val balance = Balance.newBuilder()
-            .setAmount(AccountDatabase.getBalance(accountNumber))
-            .build()
+        val balance = Balance.newBuilder().apply {
+            this.amount = AccountDatabase.getBalance(accountNumber)
+        }.build()
+
         responseObserver.onNext(balance)
         responseObserver.onCompleted()
     }
@@ -28,7 +29,7 @@ class BankService : BankServiceGrpc.BankServiceImplBase() {
         }
 
         for (i in 0 until (amount / 10)) {
-            val money = Money.newBuilder().setValue(10).build()
+            val money = Money.newBuilder().apply { this.value = 10 }.build()
             responseObserver.onNext(money)
             AccountDatabase.deductBalance(accountNumber, money.value)
             Thread.sleep(1000)

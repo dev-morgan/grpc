@@ -22,9 +22,9 @@ class MetaDataService : BankServiceGrpc.BankServiceImplBase() {
 
         logger.info { "$userRole : $userRole1" }
 
-        val balance = Balance.newBuilder()
-            .setAmount(amount)
-            .build()
+        val balance = Balance.newBuilder().apply {
+            this.amount = amount
+        }.build()
 
         // simulate time-consuming call
         responseObserver.onNext(balance)
@@ -39,10 +39,11 @@ class MetaDataService : BankServiceGrpc.BankServiceImplBase() {
         if (amount < 10 || (amount % 10) != 0) {
             val metadata = Metadata()
             val errorKey = ProtoUtils.keyForProto(WithdrawalError.getDefaultInstance())
-            val withdrawalError = WithdrawalError.newBuilder()
-                .setAmount(balance)
-                .setErrorMessage(ErrorMessage.ONLY_TEN_MULTIPLES)
-                .build()
+            val withdrawalError = WithdrawalError.newBuilder().apply {
+                this.amount = balance
+                this.errorMessage = ErrorMessage.ONLY_TEN_MULTIPLES
+            }.build()
+
             metadata.put(errorKey, withdrawalError)
 
             responseObserver.onError(Status.FAILED_PRECONDITION.asRuntimeException(metadata))
@@ -52,10 +53,10 @@ class MetaDataService : BankServiceGrpc.BankServiceImplBase() {
         if (balance < amount) {
             val metadata = Metadata()
             val errorKey = ProtoUtils.keyForProto(WithdrawalError.getDefaultInstance())
-            val withdrawalError = WithdrawalError.newBuilder()
-                .setAmount(balance)
-                .setErrorMessage(ErrorMessage.INSUFFICIENT_BALANCE)
-                .build()
+            val withdrawalError = WithdrawalError.newBuilder().apply {
+                this.amount = balance
+                this.errorMessage = ErrorMessage.INSUFFICIENT_BALANCE
+            }.build()
             metadata.put(errorKey, withdrawalError)
 
             responseObserver.onError(Status.FAILED_PRECONDITION.asRuntimeException(metadata))
@@ -64,7 +65,7 @@ class MetaDataService : BankServiceGrpc.BankServiceImplBase() {
 
         run {
             for (i in 0 until (amount / 10)) {
-                val money = Money.newBuilder().setValue(10).build()
+                val money = Money.newBuilder().apply { value = 10 }.build()
 
                 if (Context.current().isCancelled) {
                     return@run

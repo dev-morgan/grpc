@@ -22,7 +22,7 @@ class CashStreamingRequest(
     }
 
     override fun onCompleted() {
-        val balance = Balance.newBuilder().setAmount(this.accountBalance).build()
+        val balance = Balance.newBuilder().apply { this.amount = accountBalance }.build()
         balanceStreamObserver.onNext(balance)
         balanceStreamObserver.onCompleted()
     }

@@ -14,9 +14,9 @@ class DeadlineService : BankServiceGrpc.BankServiceImplBase() {
 
     override fun getBalance(request: BalanceCheckRequest, responseObserver: StreamObserver<Balance>) {
         val accountNumber = request.accountNumber
-        val balance = Balance.newBuilder()
-            .setAmount(AccountDatabase.getBalance(accountNumber))
-            .build()
+        val balance = Balance.newBuilder().apply {
+            amount = AccountDatabase.getBalance(accountNumber)
+        }.build()
 
         // simulate time-consuming call
         Uninterruptibles.sleepUninterruptibly(3, TimeUnit.SECONDS)
@@ -37,7 +37,7 @@ class DeadlineService : BankServiceGrpc.BankServiceImplBase() {
 
         run {
             for (i in 0 until (amount / 10)) {
-                val money = Money.newBuilder().setValue(10).build()
+                val money = Money.newBuilder().apply { value = 10 }.build()
                 // simulate time-consuming call
                 Uninterruptibles.sleepUninterruptibly(3, TimeUnit.SECONDS)
 
