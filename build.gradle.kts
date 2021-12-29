@@ -1,5 +1,7 @@
 import com.google.protobuf.gradle.*
 
+val grpcVersion by extra { "1.43.1" }
+
 buildscript {
     repositories {
         maven {
@@ -31,7 +33,7 @@ protobuf {
     }
     plugins {
         id("grpc") {
-            artifact = "io.grpc:protoc-gen-grpc-java:1.43.1"
+            artifact = "io.grpc:protoc-gen-grpc-java:${rootProject.extra["grpcVersion"]}"
         }
     }
     generateProtoTasks {
@@ -63,9 +65,9 @@ dependencies {
     implementation("io.github.microutils:kotlin-logging:2.1.21")
     implementation("ch.qos.logback:logback-classic:1.2.9")
 
-    implementation("io.grpc:grpc-netty-shaded:1.43.1")
-    implementation("io.grpc:grpc-protobuf:1.43.1")
-    implementation("io.grpc:grpc-stub:1.43.1")
+    implementation("io.grpc:grpc-netty-shaded:${rootProject.extra["grpcVersion"]}")
+    implementation("io.grpc:grpc-protobuf:${rootProject.extra["grpcVersion"]}")
+    implementation("io.grpc:grpc-stub:${rootProject.extra["grpcVersion"]}")
 
     compileOnly("org.apache.tomcat:annotations-api:6.0.53")
 
