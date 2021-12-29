@@ -31,7 +31,7 @@ protobuf {
     }
     plugins {
         id("grpc") {
-            artifact = "io.grpc:protoc-gen-grpc-java:1.42.1"
+            artifact = "io.grpc:protoc-gen-grpc-java:1.43.1"
         }
     }
     generateProtoTasks {
@@ -63,9 +63,9 @@ dependencies {
     implementation("io.github.microutils:kotlin-logging:2.1.21")
     implementation("ch.qos.logback:logback-classic:1.2.9")
 
-    implementation("io.grpc:grpc-netty-shaded:1.43.0")
-    implementation("io.grpc:grpc-protobuf:1.42.1")
-    implementation("io.grpc:grpc-stub:1.43.0")
+    implementation("io.grpc:grpc-netty-shaded:1.43.1")
+    implementation("io.grpc:grpc-protobuf:1.43.1")
+    implementation("io.grpc:grpc-stub:1.43.1")
 
     compileOnly("org.apache.tomcat:annotations-api:6.0.53")
 
